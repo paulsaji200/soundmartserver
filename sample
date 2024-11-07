@@ -1,0 +1,32 @@
+  {/* Stats Cards */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  {statsCards.map((stat, index) => (
+    <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="flex items-center justify-between">
+        <span className="text-gray-500 text-sm">{stat.title}</span>
+        {index === 0 ? (
+          <BarChart2 className="text-blue-600" size={20} />
+        ) : index === 1 ? (
+          <Calendar className="text-green-600" size={20} />
+        ) : index === 2 ? (
+          <PieChart className="text-purple-600" size={20} />
+        ) : (
+          <Calendar className="text-orange-600" size={20} />
+        )}
+      </div>
+      <div className="mt-2">
+        <span className="text-2xl font-bold">{stat.value}</span>
+        <div className="flex items-center mt-1">
+          {stat.isIncrease ? (
+            <ArrowUpRight className="text-green-500" size={16} />
+          ) : (
+            <ArrowDownRight className="text-red-500" size={16} />
+          )}
+          <span className={`text-sm ${stat.isIncrease ? 'text-green-500' : 'text-red-500'}`}>
+            {stat.change}
+          </span>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
