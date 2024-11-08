@@ -26,7 +26,7 @@ app.use(
   cors({
     origin: [
       
-      "https://soundmartfrontend.vercel.app/", 
+      "https://soundmartfrontend.vercel.app", 
     ],
     credentials: true,  
   })
