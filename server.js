@@ -89,7 +89,7 @@ console.log("helooooo")
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 
-app.get("/", (req, res) => {
+app.get("/ok", (req, res) => {
   res.json({message: "soundMart server starts"})
 })
 
