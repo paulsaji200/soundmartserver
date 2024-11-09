@@ -1,13 +1,14 @@
+import jwt from "jsonwebtoken";
+
 export const generateToken = (res, user) => {
-    const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, "secretKey", { expiresIn: "1d" });
-
-    console.log("Generated Token:", token); // Log the token
-
-    res.cookie('token', token, {
+    console.log("hello"+user)
+    
+    const token = jwt.sign({id:user._id,email: user.email,  name: user.name}, "secretKey", {expiresIn: "1d"})
+     
+    res.cookie("jwtToken", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Secure if in production
-        maxAge: 60 * 60 * 1000,  // 1 hour
-        sameSite: 'None',       
-        domain: 'soundmart.life' 
-    });
-};
+        secure: true,
+        maxAge: 60 * 60 * 1000,
+        sameSite: 'None'
+    })
+}
