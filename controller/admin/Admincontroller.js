@@ -29,7 +29,7 @@ import ExcelJS from "exceljs";
 
 // Admin token verification
 export const admintokenVerify = async (req, res) => {
-  const token = req.cookies?.token; // Use optional chaining to avoid potential errors
+  const token = req.cookies?.jwtToken; // Use optional chaining to avoid potential errors
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
