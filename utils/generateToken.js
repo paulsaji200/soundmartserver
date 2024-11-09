@@ -8,7 +8,9 @@ export const generateToken = (res, user) => {
      
     res.cookie('token', token, {
         httpOnly: true,
-        secure: IS_PRODUCTION, // Enable only in production if needed
+        secure: IS_PRODUCTION, // true if in production and using HTTPS
         maxAge: 60 * 60 * 1000, // 1 hour
-        sameSite: 'strict',
-    });}
+        sameSite: 'None',       // Required for cross-site cookies
+        domain: 'soundmart.life'
+    });
+    ;}
