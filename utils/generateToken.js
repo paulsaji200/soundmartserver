@@ -7,7 +7,7 @@ export const generateToken = (res, user) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // Secure if in production
         maxAge: 60 * 60 * 1000,  // 1 hour
-        sameSite: 'None',        // Ensure it's accessible cross-site
-        domain: '.yourdomain.com' // Adjust for cross-domain cookies
+        sameSite: 'None',       
+        domain: 'soundmart.life' 
     });
 };
