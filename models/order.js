@@ -100,9 +100,24 @@ orderSchema.pre("save", async function (next) {
     }
     next();
   } catch (error) {
-    next(error);  // Pass the error to Mongoose error handler
+    next(error);  
   }
 });
+async function assignOrderIDsToExistingOrders() {
+  try {
+    const orders = await Order.find({ order_ID: { $exists: false } });
+    for (const order of orders) {
+      order.order_ID = await generateUniqueOrderID();
+      await order.save();
+      console.log(`Assigned order_ID ${order.order_ID} to order ${order._id}`);
+    }
+    console.log("All existing orders have been updated with unique order_IDs.");
+  } catch (error) {
+    console.error("Error updating orders with order_IDs:", error);
+  }
+}
+assignOrderIDsToExistingOrders();
+
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;
