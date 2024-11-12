@@ -103,7 +103,7 @@ orderSchema.pre("save", async function (next) {
     next(error);  
   }
 });
-async function assignOrderIDsToExistingOrders() {
+ export const assignOrderIDsToExistingOrders =  async ()=> {
   try {
     const orders = await Order.find({ order_ID: { $exists: false } });
     for (const order of orders) {
@@ -116,7 +116,7 @@ async function assignOrderIDsToExistingOrders() {
     console.error("Error updating orders with order_IDs:", error);
   }
 }
-assignOrderIDsToExistingOrders();
+assignOrderIDsToExistingOrders;
 
 
 const Order = mongoose.model("Order", orderSchema);

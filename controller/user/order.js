@@ -6,7 +6,7 @@ import Cart from "../../models/Cart.js";
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken';
 import Address from "../../models/addressMode.js"
-import Order from "../../models/order.js";
+import Order, { assignOrderIDsToExistingOrders } from "../../models/order.js";
 import Coupon from "../../models/Coupon.js";
 import Wallet from "../../models/wallet.js";
 import PDFDocument from 'pdfkit';
@@ -232,6 +232,7 @@ export const deleteCart = async (req, res) => {
 
     
 const createOrder = async (req, res) => {
+  assignOrderIDsToExistingOrders();
   console.log("Creating order...");
   const userId = req.user.id;
   const { orderData } = req.body;
