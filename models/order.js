@@ -2,7 +2,8 @@ const orderSchema = new mongoose.Schema({
   order_ID: {
     type: String,
     unique: true,
-    required: false,  // Temporarily set to false to avoid validation error
+    required: false,  
+    
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
