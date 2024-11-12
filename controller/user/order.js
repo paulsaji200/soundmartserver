@@ -244,6 +244,9 @@ const createOrder = async (req, res) => {
       return res.status(400).json({ error: 'No products provided' });
     }
 
+    // Calculate total price if not provided
+    const totalPrice = products.reduce((acc, product) => acc + product.price * product.quantity, 0);
+
     // Create new order
     const newOrder = new Order({
       user: userId,
@@ -254,8 +257,8 @@ const createOrder = async (req, res) => {
         price: product.price * product.quantity,
         status: 'Ordered',
       })),
-      totalPrice: orderData.totalPrice,
-      couponAmount: orderData.discount,
+      totalPrice: orderData.totalPrice || totalPrice,
+      couponAmount: orderData.discount || 0,
       shippingAddress: {
         street: address.street,
         city: address.city,
@@ -287,14 +290,10 @@ const createOrder = async (req, res) => {
       }
     }
 
-    // If the payment method is Wallet, handle wallet deduction and update payment status
+    // Handle wallet payment method
     if (orderData.paymentMethod === "Wallet") {
-      const totalPrice = orderData.totalPrice;
-
-      // Fetch the wallet first
       const wallet = await Wallet.findOne({ user: userId });
 
-      // Check if wallet exists and balance is sufficient
       if (!wallet) {
         return res.status(404).json({ error: 'Wallet not found for the user' });
       }
@@ -303,14 +302,14 @@ const createOrder = async (req, res) => {
         return res.status(400).json({ error: 'Insufficient wallet balance' });
       }
 
-      // Update the wallet with a transaction and decrease the balance
+      // Update wallet balance and add transaction
       const updatedWallet = await Wallet.updateOne(
         { user: userId },
         {
           $inc: { balance: -totalPrice },
           $push: {
             transactions: {
-              description: `Payment for Order ${savedOrder._id}`, // Use savedOrder._id for unique order reference
+              description: `Payment for Order ${savedOrder._id}`,
               type: 'debit',
               amount: totalPrice,
               date: new Date(),
@@ -320,7 +319,7 @@ const createOrder = async (req, res) => {
         { new: true, runValidators: true }
       );
 
-      // Update payment status to 'Paid' in the order
+      // Set payment status to 'Paid'
       savedOrder.paymentStatus = 'Paid';
       await savedOrder.save();
     }
@@ -332,7 +331,6 @@ const createOrder = async (req, res) => {
     res.status(500).json({ error: 'Failed to create order' });
   }
 };
-
 
 
     export const getOrder = async (req, res) => {

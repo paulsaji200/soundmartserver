@@ -1,9 +1,12 @@
+import mongoose from "mongoose";
+import Users from "./userModel.js";
+import Product from "./productModel.js";
+
 const orderSchema = new mongoose.Schema({
   order_ID: {
     type: String,
     unique: true,
-    required: false,  
-    
+    required: false,  // Temporarily set to false to avoid validation error
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
