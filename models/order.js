@@ -1,7 +1,13 @@
 import mongoose from "mongoose";
 import Users from "./userModel.js";
 import Product from "./productModel.js";
+
 const orderSchema = new mongoose.Schema({
+  order_ID: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
@@ -28,11 +34,11 @@ const orderSchema = new mongoose.Schema({
       },
       status: {
         type: String,
-        enum: ['Ordered', 'Shipped', 'Delivered', 'Cancelled','Returned'],
+        enum: ['Ordered', 'Shipped', 'Delivered', 'Cancelled', 'Returned'],
         default: 'Ordered',
       },
       cancellationReason: {
-        type: String, 
+        type: String,
       },
     },
   ],
@@ -52,7 +58,6 @@ const orderSchema = new mongoose.Schema({
   },
   couponAmount: {
     type: Number,
-    
   },
   paymentStatus: {
     type: String,
@@ -75,6 +80,30 @@ const orderSchema = new mongoose.Schema({
 });
 
 
+async function generateUniqueOrderID() {
+  const min = 100000;
+  const max = 999999;
+  let orderID;
+  let isUnique = false;
+
+  while (!isUnique) {
+    // Generate a random 6-digit number
+    orderID = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    // Check if it already exists in the database
+    const existingOrder = await mongoose.model("Order").findOne({ order_ID: orderID });
+    if (!existingOrder) isUnique = true;
+  }
+  return orderID.toString();
+}
+
+
+orderSchema.pre("save", async function (next) {
+  if (!this.order_ID) {
+    this.order_ID = await generateUniqueOrderID();
+  }
+  next();
+});
 
 const Order = mongoose.model("Order", orderSchema);
-export default Order
+export default Order;
