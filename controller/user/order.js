@@ -75,7 +75,7 @@ export const getCart = async (req, res) => {
       return res.status(404).json({ message: 'Cart not found for this user' });
     }
 
-    console.log('Cart:', cart,"heloooooooooooooooooooooooooo");
+    console.log('Cart:', cart);
     return res.status(200).json(cart);
   } catch (error) {
     console.error('Error fetching cart:', error);
@@ -87,8 +87,8 @@ export const invoice = async (req, res) => {
   try {
    
     const order = await Order.findById(req.params.orderId)
-      .populate('user', 'name email') // Populate user details if necessary
-      .populate('products.productId', 'name'); // Populate product details
+      .populate('user', 'name email') 
+      .populate('products.productId', 'name');
 
     if (!order) {
       return res.status(404).send('Order not found');
@@ -97,14 +97,12 @@ export const invoice = async (req, res) => {
     // Create a new PDF document
     const doc = new PDFDocument();
 
-    // Set response headers for downloading the PDF
+    
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename=invoice_${order._id}.pdf`);
 
-    // Pipe PDF document to the response
     doc.pipe(res);
 
-    // Add content to the PDF
     doc.fontSize(20).text('Invoice', { align: 'center' });
     doc.moveDown();
     doc.fontSize(12).text(`Invoice ID: ${order._id}`);
@@ -117,7 +115,7 @@ export const invoice = async (req, res) => {
     doc.text(`Order Status: ${order.orderStatus}`);
     doc.moveDown();
 
-    // List all products
+   
     doc.text('Products:');
     order.products.forEach((product) => {
       doc.text(`${product.name} - Quantity: ${product.quantity} - Price: ${product.price} - Status: ${product.status}`);
@@ -132,7 +130,7 @@ export const invoice = async (req, res) => {
       doc.text(`Coupon Discount: -$${order.couponAmount}`);
     }
 
-    // Finalize the PDF and send it
+    
     doc.end();
   } catch (error) {
     console.error(error);
@@ -159,7 +157,7 @@ export const cartupdate = async (req, res) => {
     console.log('Requested Quantity:', quantity);
     console.log('Available Stock:', availableStock);
 
-    // Validate quantity
+
     if (quantity > availableStock) {
       return res.status(400).json({ count: availableStock });
     }

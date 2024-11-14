@@ -215,22 +215,29 @@ export const editCategory = async (req, res) => {
 };
 export const getproductAdmin = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Get the page number from the query, default to 1
-    const limit = parseInt(req.query.limit) || 10; // Get the limit from the query, default to 10
+    const page = parseInt(req.query.page) || 1; 
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || ""; 
 
-    // Calculate the starting index for the products to be retrieved
     const startIndex = (page - 1) * limit;
 
-    // Retrieve the products with pagination, sorted by date (latest first)
-    const data = await Product.find()
-      .sort({ createdAt: -1 }) // Assuming `createdAt` is the date field
+    // Define the search condition to filter by product name or category
+    const searchCondition = {
+      $or: [
+        { productName: { $regex: search, $options: "i" } }, // case-insensitive search
+        { category: { $regex: search, $options: "i" } }
+      ]
+    };
+
+    // Find products matching the search condition with pagination
+    const data = await Product.find(searchCondition)
+      .sort({ createdAt: -1 })
       .limit(limit)
-      .skip(startIndex); // Skip the previous pages' products
+      .skip(startIndex);
 
-    // Get the total count of products
-    const totalCount = await Product.countDocuments();
+    // Count total products that match the search condition
+    const totalCount = await Product.countDocuments(searchCondition);
 
-    // Send the paginated response
     res.status(200).send({
       data: data,
       currentPage: page,
@@ -242,7 +249,6 @@ export const getproductAdmin = async (req, res) => {
     res.status(500).send({ error: "Server error" });
   }
 };
-
 
 export const geteditproduct = async (req, res) => {
   const { id } = req.params;
@@ -322,7 +328,7 @@ export const deleteImageProduct = async (req,res)=>{
       
       res.status(200).json({ message: "Image deleted successfully", product });
     } catch (error) {
-      // Handle server errors
+ 
       console.error("Error deleting image:", error);
       res.status(500).json({ message: "Server error" });
     }

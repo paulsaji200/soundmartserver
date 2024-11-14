@@ -113,7 +113,7 @@ orderSchema.pre("save", async function (next) {
     }
     console.log("All existing orders have been updated with unique order_IDs.");
   } catch (error) {
-    console.error("Error updating orders with order_IDs:", error);
+    console.error("Error updating orders with order_IDs:", error)
   }
 }
 assignOrderIDsToExistingOrders;
