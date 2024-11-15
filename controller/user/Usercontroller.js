@@ -379,7 +379,7 @@ const {email}= req.body
  
 
   const token = jwt.sign({user_id:udata._id,email:udata.email}, "secretKey", {expiresIn: "1h"})  
-  const resetUrl = ` http://localhost:5173/reset-password?user_id=${udata._id}&token=${token}`;      
+  const resetUrl = ` https://soundmartfrontend.vercel.app/reset-password?user_id=${udata._id}&token=${token}`;      
   
   
   

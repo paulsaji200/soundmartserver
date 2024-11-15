@@ -221,21 +221,21 @@ export const getproductAdmin = async (req, res) => {
 
     const startIndex = (page - 1) * limit;
 
-    // Define the search condition to filter by product name or category
+    
     const searchCondition = {
       $or: [
-        { productName: { $regex: search, $options: "i" } }, // case-insensitive search
+        { productName: { $regex: search, $options: "i" } },
         { category: { $regex: search, $options: "i" } }
       ]
     };
 
-    // Find products matching the search condition with pagination
+    
     const data = await Product.find(searchCondition)
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(startIndex);
 
-    // Count total products that match the search condition
+    
     const totalCount = await Product.countDocuments(searchCondition);
 
     res.status(200).send({

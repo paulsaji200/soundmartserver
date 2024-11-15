@@ -146,20 +146,22 @@ export const search = async (req, res) => {
 export const filter = async (req, res) => {
   console.log("Filtering products...");
 
+  // Extract query parameters from the request
   const {
     query,
     price,
     category,
     brand,
     rating,
-
-    sortBy,
-    sortOrder,
+    newArrivals,
+    popularity,
+    featured,
+    sort,
   } = req.query;
 
-  console.log(price, category);
   const filters = {};
 
+  // Search Query
   if (query) {
     filters.$or = [
       { productName: { $regex: query, $options: "i" } },
@@ -167,10 +169,10 @@ export const filter = async (req, res) => {
     ];
   }
 
+  // Price Filter
   if (price) {
     try {
       const priceRange = JSON.parse(price);
-
       filters.salePrice = {
         $gte: priceRange.min || 0,
         $lte: priceRange.max || Infinity,
@@ -181,22 +183,61 @@ export const filter = async (req, res) => {
     }
   }
 
+  // Category Filter
   if (category) {
-    filters.category = { $in: Array.isArray(category) ? category : [category] };
+    filters.category = Array.isArray(category)
+      ? { $in: category }
+      : { $in: [category] };
+  }
+
+  // Brand Filter
+  if (brand) {
+    filters.brand = Array.isArray(brand)
+      ? { $in: brand }
+      : { $in: [brand] };
+  }
+
+  // Rating Filter
+  if (rating) {
+    filters.rating = { $gte: parseInt(rating, 10) || 0 };
+  }
+
+  // New Arrivals Filter
+  if (newArrivals === "true") {
+    filters.newArrivals = true;
+  }
+
+  // Popularity Filter
+  if (popularity === "true") {
+    filters.popularity = true;
+  }
+
+  // Featured Filter
+  if (featured === "true") {
+    filters.featured = true;
   }
 
   console.log("Filters applied:", filters);
 
-  const sort = {};
-  if (sortBy) {
-    sort[sortBy] = sortOrder === "desc" ? -1 : 1;
+  // Sorting Logic
+  const sortOptions = {};
+  if (sort) {
+    if (sort === "nameAsc") {
+      sortOptions.productName = 1;
+    } else if (sort === "nameDesc") {
+      sortOptions.productName = -1;
+    } else if (sort === "priceLowHigh") {
+      sortOptions.salePrice = 1;
+    } else if (sort === "priceHighLow") {
+      sortOptions.salePrice = -1;
+    }
   }
 
   try {
-    const products = await Product.find(filters).sort(sort);
-  
+    // Fetch products from the database
+    const products = await Product.find(filters).sort(sortOptions);
 
-    if (products.length === 0) {
+    if (!products || products.length === 0) {
       console.log("No products found with the applied filters.");
       return res.status(404).json({ message: "No products found" });
     }
@@ -207,6 +248,7 @@ export const filter = async (req, res) => {
     res.status(500).json({ message: "Error fetching products", error });
   }
 };
+
  export const addtowishlist = async (req, res) => {
   const userId = req.user.id;
   const { product_Id } = req.params; 
