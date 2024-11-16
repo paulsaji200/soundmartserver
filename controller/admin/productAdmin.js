@@ -218,22 +218,33 @@ export const getproductAdmin = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10;
     const search = req.query.search || ""; 
-    const sort = req.query.sort || "createdAt"; // Default sort field
-    const order = req.query.order === "asc" ? 1 : -1; // Sort order: ascending or descending
-
+    const sortOption = req.query.sort || "createdAt-asc"; // Default to "createdAt-asc" if no sort is provided.
+     console.log(sortOption)
     const startIndex = (page - 1) * limit;
+
+    const sortMap = {
+      "name-asc": { productName: 1 },
+      "name-desc": { productName: -1 },
+      "price-asc": { salePrice: 1 },
+      "price-desc": { salePrice: -1 },
+      "createdAt-asc": { createdAt: 1 },
+      "createdAt-desc": { createdAt: -1 },
+    };
+
+    // Get the sort condition based on the sort option
+    const sortCondition = sortMap[sortOption] || { createdAt: -1 };
 
     // Search condition
     const searchCondition = {
       $or: [
         { productName: { $regex: search, $options: "i" } },
-        { category: { $regex: search, $options: "i" } }
-      ]
+        { category: { $regex: search, $options: "i" } },
+      ],
     };
 
     // Fetch sorted and paginated products
     const data = await Product.find(searchCondition)
-      .sort({ [sort]: order }) // Apply sorting based on query parameters
+      .sort(sortCondition) 
       .limit(limit)
       .skip(startIndex);
 
