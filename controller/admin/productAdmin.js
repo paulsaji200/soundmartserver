@@ -218,10 +218,12 @@ export const getproductAdmin = async (req, res) => {
     const page = parseInt(req.query.page) || 1; 
     const limit = parseInt(req.query.limit) || 10;
     const search = req.query.search || ""; 
+    const sort = req.query.sort || "createdAt"; // Default sort field
+    const order = req.query.order === "asc" ? 1 : -1; // Sort order: ascending or descending
 
     const startIndex = (page - 1) * limit;
 
-    
+    // Search condition
     const searchCondition = {
       $or: [
         { productName: { $regex: search, $options: "i" } },
@@ -229,13 +231,13 @@ export const getproductAdmin = async (req, res) => {
       ]
     };
 
-    
+    // Fetch sorted and paginated products
     const data = await Product.find(searchCondition)
-      .sort({ createdAt: -1 })
+      .sort({ [sort]: order }) // Apply sorting based on query parameters
       .limit(limit)
       .skip(startIndex);
 
-    
+    // Total count of matching documents
     const totalCount = await Product.countDocuments(searchCondition);
 
     res.status(200).send({
@@ -249,6 +251,7 @@ export const getproductAdmin = async (req, res) => {
     res.status(500).send({ error: "Server error" });
   }
 };
+
 
 export const geteditproduct = async (req, res) => {
   const { id } = req.params;
