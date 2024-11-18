@@ -4,7 +4,7 @@ import addproduct, { addCategory, deletecategory, deleteImageProduct, deleteProd
 import { addbrand, Branddelete, getBrand, updateBrand, userstatus } from "../controller/admin/userManagement.js";
 import { createCoupon, deleteCoupon, editOrderStatus, getBestSellingCategories, getBestSellingProducts, getCoupen, getOrders, getSalesData, getSalesDataByMonth, orderdetails } from "../controller/admin/orderAdmin.js";
 import { updateOrderStatus } from "../controller/admin/orderAdmin.js";
-
+import isadmin from "../middlewares/isadmin.js";
 
 const adminRouter = express.Router();
 
@@ -16,7 +16,7 @@ adminRouter.get("/getcategories",getcategories)
 adminRouter.put("/updatecategory/:id",editCategory)
 adminRouter.get("/viewcustomer",viewcustomer)
 adminRouter.put("/userstatus/:id",userstatus)
-adminRouter.get("/getproducts",getproductAdmin)
+adminRouter.get("/getproducts",isadmin,getproductAdmin)
 adminRouter.get("/geteditproduct/:id",geteditproduct)
 adminRouter.put("/updateproduct/:id",editProduct)
 adminRouter.delete("/deleteproduct/:id",deleteProduct)
