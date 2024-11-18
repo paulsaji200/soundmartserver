@@ -1,3 +1,4 @@
+ import jwt from "jsonwebtoken"
  const isadmin = async (req, res) => {
     const token = req.cookies?.jwtToken; 
     if (!token) {
