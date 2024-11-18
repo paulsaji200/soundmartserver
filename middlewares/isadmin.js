@@ -15,5 +15,6 @@
       console.error("Token verification error:", error);
       return res.status(400).json({ valid: false, message: "Invalid token" });
     }
+    next();
   };
   export default isadmin;
