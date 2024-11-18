@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
 const isadmin = async (req, res, next) => {
-  // Retrieve the JWT token from cookies
-  const token = req.cookies?.jwtToken; 
+
+  const token = req.cookies.jwtToken;; 
 
   if (!token) {
     console.log("notoken")
