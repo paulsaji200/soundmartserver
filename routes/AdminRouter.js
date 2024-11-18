@@ -58,7 +58,7 @@ adminRouter.put("/updateproduct/:id", isadmin, editProduct);
 adminRouter.delete("/deleteproduct/:id", isadmin, deleteProduct);
 adminRouter.patch("/undeleteproduct/:id", isadmin, unDeleteProduct);
 adminRouter.get("/getorders", isadmin, getOrders);
-adminRouter.get("/admintoken-verify", isadmin, admintokenVerify);
+adminRouter.get("/admintoken-verify", admintokenVerify);
 adminRouter.get("/orders/:id", isadmin, orderdetails);
 adminRouter.put('/updateorders/:orderId/:productId', isadmin, updateOrderStatus);
 adminRouter.patch('/orders/:orderId', isadmin, editOrderStatus);
