@@ -5,17 +5,18 @@ const isadmin = async (req, res, next) => {
   const token = req.cookies?.jwtToken; 
 
   if (!token) {
+    console.log("notoken")
     return res.status(401).json({ message: "No token provided" });
   }
 
   try {
-    // Verify the token using the secret key
+  
     const decoded = jwt.verify(token, "secretKey");
 
-    // Check if the user has admin privileges
+   
     if (decoded.isadmin) {
       console.log("Admin verified");
-      return next(); // Proceed to the next middleware or route handler
+      next(); 
     } else {
       return res.status(403).json({ valid: false, message: "Not an admin" });
     }
