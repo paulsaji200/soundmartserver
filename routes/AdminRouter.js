@@ -4,7 +4,7 @@ import addproduct, { addCategory, deletecategory, deleteImageProduct, deleteProd
 import { addbrand, Branddelete, getBrand, updateBrand, userstatus } from "../controller/admin/userManagement.js";
 import { createCoupon, deleteCoupon, editOrderStatus, getBestSellingCategories, getBestSellingProducts, getCoupen, getOrders, getSalesData, getSalesDataByMonth, orderdetails } from "../controller/admin/orderAdmin.js";
 import { updateOrderStatus } from "../controller/admin/orderAdmin.js";
-import { isadmin } from "../middlewares/isuserAuth.js";
+
 
 const adminRouter = express.Router();
 
