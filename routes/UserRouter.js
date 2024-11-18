@@ -5,7 +5,7 @@ import getproduct, { addtowishlist, filter, filterProduct, fproduct, getwallet, 
 import createOrder, { addToCart, cancelOrder, cartupdate, clearCart, couponsapply, deleteCart, getCart,getCoupon,getOrder, invoice, returnOrder } from "../controller/user/order.js";
 import userAuth from "../middlewares/isuserAuth.js";
 
-import Brand from "../models/Barndmodel.js";
+
 
 
 const userRouter = express.Router();
