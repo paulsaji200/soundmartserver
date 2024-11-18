@@ -44,7 +44,7 @@ const adminRouter = express.Router();
 // Public Route
 adminRouter.post("/login", adminLogin);
 
-// Private Routes (Protected by isadmin middleware)
+
 adminRouter.post("/addproduct", isadmin, addproduct);
 adminRouter.post("/addcategory", isadmin, addCategory);
 adminRouter.delete('/deletecategory/:id', isadmin, deletecategory);
