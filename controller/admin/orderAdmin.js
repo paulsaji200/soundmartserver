@@ -6,30 +6,37 @@ import Category from "../../models/Categorymodel.js";
 
 export const getOrders = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10; 
-  const skip = (page - 1) * limit; 
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const search = req.query.search || ""; // Get search query from request
 
   try {
-    const orders = await Order.find({})
-      .sort({ createdAt: -1 }) 
-      .skip(skip) 
+    // Build the search condition
+    const searchCondition = search
+      ? { order_ID: { $regex: search, $options: "i" } } // Case-insensitive search
+      : {};
+
+    // Fetch orders matching the search condition
+    const orders = await Order.find(searchCondition)
+      .sort({ createdAt: -1 })
+      .skip(skip)
       .limit(limit);
 
-    const totalOrders = await Order.countDocuments();
+    const totalOrders = await Order.countDocuments(searchCondition); // Count documents matching the search condition
 
     if (!orders.length) {
-      return res.status(404).json({ message: 'No orders found' });
+      return res.status(404).json({ message: "No orders found" });
     }
-    
+
     res.status(200).json({
       data: orders,
-      totalOrders, 
-      currentPage: page, 
+      totalOrders, // Total number of matched orders
+      currentPage: page,
       totalPages: Math.ceil(totalOrders / limit),
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server Error: Unable to fetch orders' });
+    res.status(500).json({ message: "Server Error: Unable to fetch orders" });
   }
 };
 
@@ -152,6 +159,7 @@ export const getCoupen =  async (req, res) => {
 
   
   export const deleteCoupon = async (req, res) => {
+    consoel.log(req.params.id)
     try {
       const coupon = await Coupon.findByIdAndDelete(req.params.id);
       if (!coupon) {

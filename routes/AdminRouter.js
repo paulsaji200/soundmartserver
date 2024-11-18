@@ -26,7 +26,7 @@ adminRouter.put('/updateorders/:orderId/:productId', updateOrderStatus);
 adminRouter.patch('/orders/:orderId',editOrderStatus)
 adminRouter.get("/getCoupon",getCoupen)
 adminRouter.post("/createcoupon",createCoupon)
-adminRouter.delete("/deleteCoupon",deleteCoupon)
+adminRouter.delete("/deleteCoupon/:id",deleteCoupon)
 adminRouter.delete("/deleteimageproduct",deleteImageProduct)
 adminRouter.get("/salesreport",salesReport)
 adminRouter.get("/reportdownload",salesReportDownload)
