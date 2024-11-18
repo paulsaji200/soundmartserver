@@ -27,7 +27,7 @@ import ExcelJS from "exceljs";
   }
 };
 
-// Admin token verification
+
 export const admintokenVerify = async (req, res) => {
   const token = req.cookies?.jwtToken; 
   if (!token) {

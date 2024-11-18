@@ -37,7 +37,7 @@ import {
   orderdetails 
 } from "../controller/admin/orderAdmin.js";
 import { updateOrderStatus } from "../controller/admin/orderAdmin.js";
-import { isadmin } from "../middlewares/isuserAuth.js";
+import isadmin from "../middlewares/isadmin.js";
 
 const adminRouter = express.Router();
 
