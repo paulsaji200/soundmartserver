@@ -36,8 +36,8 @@ export const addToCart = async (req, res) => {
     const existingProduct = cart.products.find(p => p.productId.toString() === productId.toString());
 
     if (existingProduct) {
-
-      existingProduct.quantity += 1;
+      res.status(200).json(cart);
+      ;
     } else {
     
       cart.products.push({

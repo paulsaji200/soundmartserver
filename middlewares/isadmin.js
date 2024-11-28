@@ -21,7 +21,7 @@ const isadmin = async (req, res, next) => {
       return res.status(403).json({ valid: false, message: "Not an admin" });
     }
   } catch (error) {
-    // Handle errors during token verification
+   
     console.error("Token verification error:", error);
     return res.status(400).json({ valid: false, message: "Invalid token" });
   }

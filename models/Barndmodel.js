@@ -15,7 +15,7 @@ const brandSchema = new mongoose.Schema({
  
   status: {
     type: Boolean,
-    default: true // true = active, false = inactive
+    default: true 
   },
   createdAt: {
     type: Date,

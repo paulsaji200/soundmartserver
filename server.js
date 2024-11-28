@@ -3,8 +3,8 @@ import cors from "cors";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
-import connectDb from "./config/connectdb.js"; // Ensure this connects to your MongoDB
-import User from "./models/userModel.js"; // Import your User model
+import connectDb from "./config/connectdb.js";      
+import User from "./models/userModel.js"; 
 import userRouter from "./routes/UserRouter.js";
 import nodemailer from "nodemailer";
 import adminRouter from "./routes/AdminRouter.js";
@@ -21,7 +21,7 @@ import Razorpay from "razorpay";
 
 dotenv.config();
 
-// Middleware
+
 app.use(
   cors({
     origin: [
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json())
-connectDb(); // Connect to the database
+connectDb(); 
 const razorpay = new Razorpay({
 
   key_id: "rzp_test_homhAZdqfLrL9E", 

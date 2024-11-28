@@ -7,7 +7,7 @@ const couponSchema = new mongoose.Schema({
         unique: true
     },
     discount: {
-        type: Number,  // Discount percentage (e.g., 10 for 10%)
+        type: Number, 
         required: true
     },
     expiryDate: {
@@ -19,12 +19,12 @@ const couponSchema = new mongoose.Schema({
         default: true
     },
     minPurchase: {
-        type: Number,  // Minimum purchase amount to apply this coupon
-        default: 0     // If 0, the coupon can be applied to any purchase
+        type: Number, 
+        default: 0    
     },
     maxPurchase: {
-        type: Number,  // Maximum purchase amount allowed for the coupon (optional)
-        default: null  // If null, no upper limit for purchase amount
+        type: Number,  
+        default: null  
     },
     maxDiscount:{
         type:Number,

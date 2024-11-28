@@ -56,7 +56,7 @@ productSchema.virtual("finalPrice").get(async function () {
 });
 
 
-productSchema.set("toJSON", { virtuals: true });
+productSchema.set("toJSON",{ virtuals: true });
 
 const Product = mongoose.model("Product", productSchema);
 

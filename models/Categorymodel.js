@@ -21,7 +21,7 @@ const categorySchema = new mongoose.Schema({
   }
 }, 
 {
-  timestamps: true, // Add timestamps to track createdAt and updatedAt
+  timestamps: true, 
 });
 
 const Category = mongoose.model('CategoryList', categorySchema);
